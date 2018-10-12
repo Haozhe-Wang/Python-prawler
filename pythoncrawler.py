@@ -63,7 +63,7 @@ def DownloadFile(File,name,folderPath):
         f.write(buffer)
     f.close()
 
-def TestMoodle(loginurl,url,username,password,agent,folder_name):
+def TestMoodle(loginurl,url,username,password,folder_name,agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'):
     opener = Login(agent, username, password, loginurl)
     content = Openwebsite(url, opener)
     files = re.findall(r"((https?):((//)|(\\\\))+[\w\d:#@%/;$()~_?\+-=\\\.&]*/([a-zA-Z0-9\r_-]+\.pdf)[?=a-zA-Z0-9_]*)",content)
@@ -71,7 +71,7 @@ def TestMoodle(loginurl,url,username,password,agent,folder_name):
         file_content=opener.open(file[0])
         DownloadFile(file_content,file[-1],folder_name)
 
-def TestEncryptWebsite(url,username,password,folder_name):
+def TestEncryptWebsite(url,username,password,folder_name,agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'):
     content = Openwebsite(url)
     files = re.findall(r"href=\"([a-zA-Z0-9\r_/-]+\.pdf)[?=a-zA-Z0-9_\"]*", content)
     fileurl = []
@@ -89,22 +89,24 @@ def TestEncryptWebsite(url,username,password,folder_name):
         page = Req.urlopen(fileurl[i])
         DownloadFile(page, files[i], folder_name)
 
+def Test():
+    #This is a moodle test
+    loginurl="https://cs4.ucc.ie/moodle/login/index.php"
+    url='https://cs4.ucc.ie/moodle/course/view.php?id=122'
+    agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+    password=''  #hardcode your password
+    username=''  #hardcode your username
+    folder_name='operating system files'
 
-#This is a moodle test
-loginurl="https://cs4.ucc.ie/moodle/login/index.php"
-url='https://cs4.ucc.ie/moodle/course/view.php?id=122'
-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
-password=''  #hardcode your password
-username=''  #hardcode your username
-folder_name='operating system files'
-
-TestMoodle(loginurl,url,username,password,agent,folder_name)
+    TestMoodle(loginurl,url,username,password,agent,folder_name)
 
 
-#This is a test that need to enter username and password for the server
-url='http://www.cs.ucc.ie/~kb11/teaching/CS2515/Lectures/'
-password='cs1'
-username='cs1'
-TestEncryptWebsite(url,username,password,'Datastructure and Algorithms')
+    #This is a test that need to enter username and password for the server
+    url='http://www.cs.ucc.ie/~kb11/teaching/CS2515/Lectures/'
+    password='cs1'
+    username='cs1'
+    TestEncryptWebsite(url,username,password,'Datastructure and Algorithms')
 
+if __name__=='__main__':
+    Test()
 
